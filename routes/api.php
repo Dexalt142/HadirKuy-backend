@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PertemuanController;
+use App\Http\Controllers\PresensiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +15,13 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('pertemuan/{id}', [PertemuanController::class, 'getPertemuan']);
+Route::post('presensi', [PresensiController::class, 'createPresensi']);
+
+Route::group(['prefix' => 'guru'], function() {
+
+});
 
 Route::any('{any}', function () {
     return response()->json([
