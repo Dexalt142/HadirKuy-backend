@@ -22,9 +22,9 @@ class Auth {
             JWTAuth::parseToken()->authenticate();
         } catch (Exception $e) {
             return response()->json([
-                'status' => 400,
+                'status' => 401,
                 'message' => 'Unathorized.'
-            ], 400);
+            ], 401);
         }
 
         return $next($request);
