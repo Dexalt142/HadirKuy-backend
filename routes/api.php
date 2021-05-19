@@ -23,6 +23,12 @@ Route::group(['prefix' => 'auth'], function() {
     Route::get('user', [AuthController::class, 'getUser'])->middleware(['api.auth']);
 });
 
+Route::group(['middleware' => ['api.auth']], function() {
+    Route::group(['prefix' => 'pertemuan'], function() {
+        Route::post('/', [PertemuanController::class, 'createPertemuan']);
+    });
+});
+
 Route::get('pertemuan/{id}', [PertemuanController::class, 'getPertemuan']);
 Route::post('presensi', [PresensiController::class, 'createPresensi']);
 
