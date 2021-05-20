@@ -22,4 +22,13 @@ class Siswa extends Model {
         'foto'
     ];
 
+    /**
+     * Get presensi
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function presensi() {
+        return $this->hasMany(\App\Models\Presensi::class, 'siswa_id');
+    }
+
 }

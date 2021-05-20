@@ -18,4 +18,22 @@ class Presensi extends Model {
         'siswa_id'
     ];
 
+    /**
+     * Get pertemuan
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function guru() {
+        return $this->belongsTo(\App\Models\Pertemuan::class, 'pertemuan_id');
+    }
+
+    /**
+     * Get siswa
+     *
+     * @return Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function siswa() {
+        return $this->belongsTo(\App\Models\Siswa::class, 'siswa_id');
+    }
+
 }

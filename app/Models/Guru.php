@@ -64,5 +64,14 @@ class Guru extends Authenticatable implements JWTSubject {
         return [];
     }
 
+    /**
+     * Get pertemuan
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pertemuan() {
+        return $this->hasMany(\App\Models\Pertemuan::class, 'guru_id');
+    }
+
 
 }
