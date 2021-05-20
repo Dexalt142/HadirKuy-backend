@@ -40,6 +40,37 @@ class PertemuanController extends Controller {
     }
 
     /**
+     * Get all pertemuan
+     *
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function getAllPertemuan() {
+        
+        try {
+
+            $user = auth()->user();
+            $pertemuan = $user->pertemuan;
+
+            if($pertemuan->isEmpty()) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Fetch failed, pertemuan not found.',
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'Fetch success.',
+                'data' => $pertemuan
+            ]);
+
+        } catch (Exception $e) {
+            return $this->errorMessage($e);
+        }
+
+    }
+
+    /**
      * Create pertemuan
      *
      * @param Request $request
