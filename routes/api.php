@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PertemuanController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\SiswaController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,10 @@ Route::group(['prefix' => 'auth'], function() {
 });
 
 Route::group(['middleware' => ['api.auth']], function() {
+    Route::group(['prefix' => 'siswa'], function() {
+        Route::get('/', [SiswaController::class, 'getAllSiswa']);
+    });
+
     Route::group(['prefix' => 'pertemuan'], function() {
         Route::get('/', [PertemuanController::class, 'getAllPertemuan']);
         Route::post('/', [PertemuanController::class, 'createPertemuan']);
