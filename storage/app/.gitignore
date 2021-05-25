@@ -1,3 +1,7 @@
 *
+presensi_image/*
+siswa_image/*
 !public/
+!presensi_image
+!siswa_image
 !.gitignore

@@ -1,6 +1,8 @@
 /node_modules
 /public/hot
 /public/storage
+/public/presensi_image
+/public/siswa_image
 /storage/*.key
 /vendor
 .env

@@ -52,6 +52,20 @@ return [
             'endpoint' => env('AWS_ENDPOINT'),
         ],
 
+        'presensi_image' => [
+            'driver' => 'local',
+            'root' => storage_path('app/presensi_image'),
+            'url' => env('APP_URL').'/presensi_image',
+            'visibility' => 'public'
+        ],
+        
+        'siswa_image' => [
+            'driver' => 'local',
+            'root' => storage_path('app/siswa_image'),
+            'url' => env('APP_URL').'/siswa_image',
+            'visibility' => 'public'
+        ],
+
     ],
 
     /*
@@ -66,7 +80,9 @@ return [
     */
 
     'links' => [
-        public_path('storage') => storage_path('app/public'),
+        // public_path('storage') => storage_path('app/public'),
+        public_path('presensi_image') => storage_path('app/presensi_image'),
+        public_path('siswa_image') => storage_path('app/siswa_image'),
     ],
 
 ];
