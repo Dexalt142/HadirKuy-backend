@@ -24,6 +24,7 @@ class SiswaController extends Controller {
             }
 
             $siswa = $siswa->map(function($sis) {
+                $sis->ttl = $sis->tempat_lahir.', '.$this->formattedDate($sis->tanggal_lahir);
                 $sis->foto = Config::get('app.url').'/siswa_image/'.$sis->foto;
                 return $sis;
             });

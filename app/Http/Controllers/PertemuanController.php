@@ -24,6 +24,8 @@ class PertemuanController extends Controller {
             $pertemuan = Pertemuan::where('id', $id)->orWhereRaw("BINARY `kode_pertemuan`=?", [$id])->first();
 
             if($pertemuan) {
+                $pertemuan->date_time = $this->formattedDate($pertemuan->tanggal, $pertemuan->waktu, true);
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'Fetch success.',
@@ -54,6 +56,7 @@ class PertemuanController extends Controller {
             $siswa = Siswa::all();
 
             if($pertemuan) {
+                $pertemuan->date_time = $this->formattedDate($pertemuan->tanggal, $pertemuan->waktu, true);
                 $presensi = $pertemuan->presensi;
                 $present = collect();
                 $absent = collect();
@@ -124,6 +127,11 @@ class PertemuanController extends Controller {
                     'message' => 'Fetch failed, pertemuan not found.',
                 ], 404);
             }
+
+            $pertemuan = $pertemuan->map(function($per) {
+                $per->date_time = $this->formattedDate($per->tanggal, $per->waktu, true);
+                return $per;
+            });
 
             return response()->json([
                 'status' => 200,

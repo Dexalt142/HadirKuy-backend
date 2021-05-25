@@ -43,7 +43,7 @@ class Controller extends BaseController {
      * @param boolean $withSeconds
      * @return String
      */
-    public function formattedDate($tanggal, $waktu, $withTime = false, $withSeconds = false) {
+    public function formattedDate($tanggal, $waktu = null, $withTime = false, $withSeconds = false) {
         $dateTime = Carbon::parse("$tanggal $waktu");
         if($withTime) {
             if($withSeconds) {

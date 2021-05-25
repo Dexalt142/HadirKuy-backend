@@ -49,6 +49,8 @@ class PresensiController extends Controller {
             $pertemuan = Siswa::find($request->pertemuan_id);
             $presensi = Presensi::where('pertemuan_id', $pertemuan->id)->where('siswa_id', $siswa->id)->first();
             if($presensi) {
+                $presensi->date_time = $this->formattedDate($presensi->tanggal, $presensi->waktu, true, true);
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'Data exists.',
@@ -72,8 +74,10 @@ class PresensiController extends Controller {
                 'siswa_id' => $siswa->id,
                 'foto' => $fileName
             ]);
-
+            
             if($presensi->save()) {
+                $presensi->date_time = $this->formattedDate($presensi->tanggal, $presensi->waktu, true, true);
+                
                 return response()->json([
                     'status' => 200,
                     'message' => 'Create success.',
