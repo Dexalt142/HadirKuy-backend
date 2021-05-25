@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Siswa;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 
 class SiswaController extends Controller {
     
@@ -23,7 +24,7 @@ class SiswaController extends Controller {
             }
 
             $siswa = $siswa->map(function($sis) {
-                $sis->foto = env('APP_URL').'/siswa_image/'.$sis->foto;
+                $sis->foto = Config::get('app.url').'/siswa_image/'.$sis->foto;
                 return $sis;
             });
 

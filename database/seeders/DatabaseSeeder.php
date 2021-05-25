@@ -42,9 +42,9 @@ class DatabaseSeeder extends Seeder {
             'kode' => 'b07af1cc-147d-4d24-9e5f-421d508643dd',
             'nama' => 'Fatur Rahman',
             'jenis_kelamin' => 'L',
-            'alamat' => 'Sukarajin',
+            'alamat' => 'Bandung',
             'tempat_lahir' => 'Bandung',
-            'tanggal_lahir' => '2000-02-14',
+            'tanggal_lahir' => '2000-02-01',
             'foto' => 'b07af1cc-147d-4d24-9e5f-421d508643dd.jpg'
         ]);
     }
