@@ -40,6 +40,36 @@ class PertemuanController extends Controller {
     }
 
     /**
+     * Get detail pertemuan by id
+     *
+     * @param String $id
+     * @return Illuminate\Http\JsonResponse
+     */
+    public function getDetailPertemuan($id) {
+
+        try {
+            $pertemuan = Pertemuan::where('id', $id)->first();
+
+            if($pertemuan) {
+                $pertemuan->presensi;
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Fetch success.',
+                    'data' => $pertemuan
+                ]);
+            }
+
+            return response()->json([
+                'status' => 404,
+                'message' => 'Fetch failed, pertemuan not found.',
+            ], 404);
+        } catch (Exception $e) {
+            return $this->errorMessage($e);
+        }
+
+    }
+
+    /**
      * Get all pertemuan
      *
      * @return Illuminate\Http\JsonResponse

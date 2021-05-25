@@ -31,6 +31,7 @@ Route::group(['middleware' => ['api.auth']], function() {
 
     Route::group(['prefix' => 'pertemuan'], function() {
         Route::get('/', [PertemuanController::class, 'getAllPertemuan']);
+        Route::get('/detail/{id}', [PertemuanController::class, 'getDetailPertemuan']);
         Route::post('/', [PertemuanController::class, 'createPertemuan']);
     });
 });
