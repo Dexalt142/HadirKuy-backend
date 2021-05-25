@@ -15,7 +15,8 @@ class Presensi extends Model {
         'tanggal',
         'waktu',
         'pertemuan_id',
-        'siswa_id'
+        'siswa_id',
+        'foto'
     ];
 
     /**

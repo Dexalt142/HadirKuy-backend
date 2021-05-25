@@ -17,6 +17,7 @@ class CreatePresensiTable extends Migration
             $table->id();
             $table->date('tanggal');
             $table->time('waktu');
+            $table->string('foto');
             $table->unsignedBigInteger('pertemuan_id');
             $table->unsignedBigInteger('siswa_id');
             $table->foreign('pertemuan_id')->references('id')->on('pertemuan');

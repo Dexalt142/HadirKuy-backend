@@ -22,11 +22,16 @@ class SiswaController extends Controller {
                 ], 404);
             }
 
+            $siswa = $siswa->map(function($sis) {
+                $sis->foto = env('APP_URL').'/siswa_image/'.$sis->foto;
+                return $sis;
+            });
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Fetch success.',
                 'data' => $siswa
-            ]);
+            ], 200, [], JSON_UNESCAPED_SLASHES);
         } catch (Exception $e) {
             return $this->errorMessage($e);
         }

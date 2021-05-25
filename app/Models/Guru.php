@@ -21,7 +21,7 @@ class Guru extends Authenticatable implements JWTSubject {
      */
     protected $fillable = [
         'nip',
-        'nam',
+        'nama',
         'email',
         'password',
         'mata_pelajaran'
