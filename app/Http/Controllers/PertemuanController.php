@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pertemuan;
+use App\Models\Siswa;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -49,14 +51,49 @@ class PertemuanController extends Controller {
 
         try {
             $pertemuan = Pertemuan::where('id', $id)->first();
+            $siswa = Siswa::all();
 
             if($pertemuan) {
-                $pertemuan->presensi;
+                $presensi = $pertemuan->presensi;
+                $present = collect();
+                $absent = collect();
+
+                foreach($siswa as $sis) {
+                    $presensiSiswa = $presensi->where('siswa_id', $sis->id)->first();
+                    $presData = [
+                        'siswa' => [
+                            'id' => $sis->id,
+                            'nis' => $sis->nis,
+                            'nama' => $sis->nama,
+                            'foto' => Config::get('app.url').'/siswa_image/'.$sis->foto,
+                        ]
+                    ];
+
+                    if(!$presensiSiswa) {
+                        $absent->push($presData);
+                        continue;
+                    }
+
+                    $presData['presensi'] = [
+                        'id' => $presensiSiswa->id,
+                        'date_time' => $this->formattedDate($presensiSiswa->tanggal, $presensiSiswa->waktu, true, true),
+                        'foto' => Config::get('app.url').'/presensi_image/'.$presensiSiswa->foto,
+                    ];
+
+                    $present->push($presData);
+                }
+
+                $pertemuan->unsetRelation('presensi');
+                $pertemuan->presensi = [
+                    'present' => $present,
+                    'absent' => $absent,
+                ];
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'Fetch success.',
                     'data' => $pertemuan
-                ]);
+                ], 200, [], JSON_UNESCAPED_SLASHES);
             }
 
             return response()->json([
