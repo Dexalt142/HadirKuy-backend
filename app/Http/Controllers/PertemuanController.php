@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pertemuan;
 use App\Models\Siswa;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -25,12 +26,13 @@ class PertemuanController extends Controller {
 
             if($pertemuan) {
                 $pertemuan->date_time = $this->formattedDate($pertemuan->tanggal, $pertemuan->waktu, true);
-
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Fetch success.',
-                    'data' => $pertemuan
-                ]);
+                if(now()->diffInMinutes(Carbon::parse($pertemuan->date_time)) < 30) {
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'Fetch success.',
+                        'data' => $pertemuan
+                    ]);
+                }
             }
 
             return response()->json([
@@ -59,6 +61,7 @@ class PertemuanController extends Controller {
                 $pertemuan->date_time = $this->formattedDate($pertemuan->tanggal, $pertemuan->waktu, true);
                 $presensi = $pertemuan->presensi;
                 $present = collect();
+                $late = collect();
                 $absent = collect();
 
                 foreach($siswa as $sis) {
@@ -81,7 +84,13 @@ class PertemuanController extends Controller {
                         'id' => $presensiSiswa->id,
                         'date_time' => $this->formattedDate($presensiSiswa->tanggal, $presensiSiswa->waktu, true, true),
                         'foto' => Config::get('app.url').'/presensi_image/'.$presensiSiswa->foto,
+                        'status' => $this->isLate($pertemuan, $presensiSiswa),
                     ];
+
+                    if($presData['presensi']['status'] == 'Terlambat') {
+                        $late->push($presData);
+                        continue;
+                    }
 
                     $present->push($presData);
                 }
@@ -89,6 +98,7 @@ class PertemuanController extends Controller {
                 $pertemuan->unsetRelation('presensi');
                 $pertemuan->presensi = [
                     'present' => $present,
+                    'late' => $late,
                     'absent' => $absent,
                 ];
 

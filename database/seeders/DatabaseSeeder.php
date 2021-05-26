@@ -47,5 +47,16 @@ class DatabaseSeeder extends Seeder {
             'tanggal_lahir' => '2000-02-01',
             'foto' => 'b07af1cc-147d-4d24-9e5f-421d508643dd.jpg'
         ]);
+
+        Siswa::create([
+            'nis' => '1800003',
+            'kode' => '153d96f3-b177-4fc5-adbb-d38866edef80',
+            'nama' => 'Muhammad Atirussalaam',
+            'jenis_kelamin' => 'L',
+            'alamat' => 'Bandung',
+            'tempat_lahir' => 'Bandung',
+            'tanggal_lahir' => '2000-02-05',
+            'foto' => '153d96f3-b177-4fc5-adbb-d38866edef80.jpg'
+        ]);
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Presensi;
 use App\Models\Siswa;
+use App\Models\Pertemuan;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
@@ -46,10 +48,12 @@ class PresensiController extends Controller {
 
             $siswa = Siswa::where('kode', $request->siswa_uid)->first();
             $siswa->foto = Config::get('app.url').'/siswa_image/'.$siswa->foto;
-            $pertemuan = Siswa::find($request->pertemuan_id);
+            $pertemuan = Pertemuan::find($request->pertemuan_id);
+            $pertemuan->date_time = $this->formattedDate($pertemuan->tanggal, $pertemuan->waktu, true, true);
             $presensi = Presensi::where('pertemuan_id', $pertemuan->id)->where('siswa_id', $siswa->id)->first();
             if($presensi) {
                 $presensi->date_time = $this->formattedDate($presensi->tanggal, $presensi->waktu, true, true);
+                $presensi->status = $this->isLate($pertemuan, $presensi);
 
                 return response()->json([
                     'status' => 200,
@@ -61,32 +65,40 @@ class PresensiController extends Controller {
                 ], 200, [], JSON_UNESCAPED_SLASHES);
             }
 
-            $currentDate = now();
-            $picture = $request->file('picture');
-            $fileName = Str::uuid().'.jpg';
-
-            Storage::disk('presensi_image')->putFileAs('', $picture, $fileName);
-
-            $presensi = Presensi::create([
-                'tanggal' => $currentDate->toDateString(),
-                'waktu' => $currentDate->toTimeString(),
-                'pertemuan_id' => $pertemuan->id,
-                'siswa_id' => $siswa->id,
-                'foto' => $fileName
-            ]);
-            
-            if($presensi->save()) {
-                $presensi->date_time = $this->formattedDate($presensi->tanggal, $presensi->waktu, true, true);
+            if(now()->diffInMinutes(Carbon::parse($pertemuan->date_time)) < 30) {
+                $currentDate = now();
+                $picture = $request->file('picture');
+                $fileName = Str::uuid().'.jpg';
+    
+                Storage::disk('presensi_image')->putFileAs('', $picture, $fileName);
+    
+                $presensi = Presensi::create([
+                    'tanggal' => $currentDate->toDateString(),
+                    'waktu' => $currentDate->toTimeString(),
+                    'pertemuan_id' => $pertemuan->id,
+                    'siswa_id' => $siswa->id,
+                    'foto' => $fileName
+                ]);
                 
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Create success.',
-                    'data' => [
-                        'presensi' => $presensi,
-                        'siswa' => $siswa
-                    ]
-                ], 200, [], JSON_UNESCAPED_SLASHES);
+                if($presensi->save()) {
+                    $presensi->date_time = $this->formattedDate($presensi->tanggal, $presensi->waktu, true, true);
+                    $presensi->status = $this->isLate($pertemuan, $presensi);
+                    
+                    return response()->json([
+                        'status' => 200,
+                        'message' => 'Create success.',
+                        'data' => [
+                            'presensi' => $presensi,
+                            'siswa' => $siswa
+                        ]
+                    ], 200, [], JSON_UNESCAPED_SLASHES);
+                }
             }
+
+            return response()->json([
+                'status' => 400,
+                'message' => 'Create failed, time is over.'
+            ], 400);
 
         } catch (Exception $e) {
             return $this->errorMessage($e);
