@@ -55,4 +55,22 @@ class Controller extends BaseController {
         
         return $dateTime->format('d M Y');
     }
+
+    /**
+     * Check whether student is late
+     *
+     * @param \App\Models\Pertemuan $pertemuan
+     * @param \App\Models\Presensi $presensi
+     * @return String
+     */
+    public function isLate($pertemuan, $presensi) {
+        $jadwalPertemuan = Carbon::parse("$pertemuan->tanggal $pertemuan->waktu");
+        $waktuPresensi = Carbon::parse("$presensi->tanggal $presensi->waktu");
+        
+        if($jadwalPertemuan->diffInMinutes($waktuPresensi) >= 15) {
+            return 'Terlambat';
+        }
+
+        return 'Tepat Waktu';
+    }
 }
