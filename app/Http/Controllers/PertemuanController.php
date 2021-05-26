@@ -23,10 +23,12 @@ class PertemuanController extends Controller {
 
         try {
             $pertemuan = Pertemuan::where('id', $id)->orWhereRaw("BINARY `kode_pertemuan`=?", [$id])->first();
+            $a = Carbon::now();
 
             if($pertemuan) {
                 $pertemuan->date_time = $this->formattedDate($pertemuan->tanggal, $pertemuan->waktu, true);
-                if(now()->diffInMinutes(Carbon::parse($pertemuan->date_time)) < 30) {
+                $pertemuanDateTime = Carbon::parse($pertemuan->date_time);
+                if(($pertemuanDateTime->lessThanOrEqualTo(now())) && (now()->diffInMinutes($pertemuanDateTime) < 30)) {
                     return response()->json([
                         'status' => 200,
                         'message' => 'Fetch success.',
@@ -201,6 +203,8 @@ class PertemuanController extends Controller {
             ]);
 
             if($pertemuan->save()) {
+                $pertemuan->date_time = $this->formattedDate($pertemuan->tanggal, $pertemuan->waktu, true, true);
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'Create succes.',

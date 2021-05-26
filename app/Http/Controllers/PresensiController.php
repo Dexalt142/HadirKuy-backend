@@ -65,7 +65,8 @@ class PresensiController extends Controller {
                 ], 200, [], JSON_UNESCAPED_SLASHES);
             }
 
-            if(now()->diffInMinutes(Carbon::parse($pertemuan->date_time)) < 30) {
+            $pertemuanDT = Carbon::parse($pertemuan->date_time);
+            if(($pertemuanDT->lessThanOrEqualTo(now())) && (now()->diffInMinutes($pertemuanDT) < 30)) {
                 $currentDate = now();
                 $picture = $request->file('picture');
                 $fileName = Str::uuid().'.jpg';
@@ -97,7 +98,7 @@ class PresensiController extends Controller {
 
             return response()->json([
                 'status' => 400,
-                'message' => 'Create failed, time is over.'
+                'message' => 'Create failed, cannot create outside time window.'
             ], 400);
 
         } catch (Exception $e) {
