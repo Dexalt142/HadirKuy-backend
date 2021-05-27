@@ -24,7 +24,7 @@ class Presensi extends Model {
      *
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function guru() {
+    public function pertemuan() {
         return $this->belongsTo(\App\Models\Pertemuan::class, 'pertemuan_id');
     }
 

@@ -27,6 +27,7 @@ Route::group(['prefix' => 'auth'], function() {
 Route::group(['middleware' => ['api.auth']], function() {
     Route::group(['prefix' => 'siswa'], function() {
         Route::get('/', [SiswaController::class, 'getAllSiswa']);
+        Route::get('/{id}', [SiswaController::class, 'getSiswa']);
     });
 
     Route::group(['prefix' => 'pertemuan'], function() {
