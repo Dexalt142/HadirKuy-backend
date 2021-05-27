@@ -41,6 +41,7 @@ Route::group(['middleware' => ['api.auth']], function() {
 });
 
 Route::get('pertemuan/{id}', [PertemuanController::class, 'getPertemuan']);
+Route::get('rekap/{id}', [SiswaController::class, 'getRekapPresensi']);
 Route::post('presensi', [PresensiController::class, 'createPresensi']);
 
 Route::group(['prefix' => 'guru'], function() {
