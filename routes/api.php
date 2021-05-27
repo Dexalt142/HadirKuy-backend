@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PertemuanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\GuruController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,8 @@ Route::group(['prefix' => 'auth'], function() {
 });
 
 Route::group(['middleware' => ['api.auth']], function() {
+    Route::get('/statistic', [GuruController::class, 'getStatistic']);
+
     Route::group(['prefix' => 'siswa'], function() {
         Route::get('/', [SiswaController::class, 'getAllSiswa']);
         Route::get('/{id}', [SiswaController::class, 'getSiswa']);
