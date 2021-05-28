@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Pertemuan;
 use App\Models\Presensi;
 use App\Models\Siswa;
-use Illuminate\Http\Request;
 use Exception;
 
 class GuruController extends Controller {

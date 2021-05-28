@@ -15,6 +15,12 @@ use Illuminate\Support\Str;
 
 class PresensiController extends Controller {
     
+    /**
+     * Create presensi
+     *
+     * @param Request $request
+     * @return Illuminate\Http\JsonResponse
+     */
     public function createPresensi(Request $request) {
 
         try {

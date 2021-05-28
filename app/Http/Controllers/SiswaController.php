@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Siswa;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
 class SiswaController extends Controller {
@@ -89,6 +88,12 @@ class SiswaController extends Controller {
         
     }
     
+    /**
+     * Get rekap presensi siswa
+     *
+     * @param String $id
+     * @return Illuminate\Http\JsonResponse
+     */
     public function getRekapPresensi($id) {
 
         try {
