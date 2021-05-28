@@ -44,10 +44,6 @@ Route::get('pertemuan/{id}', [PertemuanController::class, 'getPertemuan']);
 Route::get('rekap/{id}', [SiswaController::class, 'getRekapPresensi']);
 Route::post('presensi', [PresensiController::class, 'createPresensi']);
 
-Route::group(['prefix' => 'guru'], function() {
-
-});
-
 Route::any('{any}', function () {
     return response()->json([
         'status' => 400,
