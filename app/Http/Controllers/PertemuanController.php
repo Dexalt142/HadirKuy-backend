@@ -193,6 +193,18 @@ class PertemuanController extends Controller {
                 ], 400);
             }
 
+            $time = Carbon::parse("$request->tanggal $request->waktu");
+            if($time->lessThanOrEqualTo(now())) {
+                return response()->json([
+                    'status' => 400,
+                    'message' => 'The given data was invalid.',
+                    'errors' => [
+                        'tanggal' => ['Tanggal atau waktu harus melebihi waktu saat ini'],
+                        'waktu' => ['Tanggal atau waktu harus melebihi waktu saat ini'],
+                    ]
+                ], 400);
+            }
+
             $user = auth()->user();
             $pertemuan = Pertemuan::make([
                 'nama' => $request->nama,
